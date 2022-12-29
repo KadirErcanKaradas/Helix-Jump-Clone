@@ -13,11 +13,27 @@ public class Helix : MonoBehaviour,IHelix
     
     public void Interact()
     {
+        StartCoroutine(HideHelix());
+        manager.comboCount++;
+        GameEvent.Score();
+        manager.isFallen = true;
+    }
+
+    private IEnumerator HideHelix()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.GetComponent<Rigidbody>().isKinematic = false;
+        }
+        yield return new WaitForSeconds(0.1f);
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.GetComponent<MeshCollider>().enabled = false;
+        }
+        yield return new WaitForSeconds(1f);
         for (int i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).gameObject.SetActive(false);
         }
-        manager.comboCount++;
-        GameEvent.Score();
     }
 }

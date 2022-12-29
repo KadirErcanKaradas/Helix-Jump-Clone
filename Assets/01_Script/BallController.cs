@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 
 public class BallController : MonoBehaviour,IInteractable
@@ -7,7 +8,8 @@ public class BallController : MonoBehaviour,IInteractable
     private Rigidbody rb;
     private GameManager manager;
     [SerializeField] private float jumpPower = 5f;
-    [SerializeField] private GameObject part;
+    [SerializeField] private GameObject partFire;
+    [SerializeField] private GameObject partBlood;
 
     private void Start()
     {
@@ -20,9 +22,9 @@ public class BallController : MonoBehaviour,IInteractable
         if (manager.GameStage == GameStage.Started)
             rb.isKinematic = false;
         if (manager.comboCount >= 3)
-            part.SetActive(true);
+            partFire.SetActive(true);
         else
-            part.SetActive(false);
+            partFire.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -36,13 +38,18 @@ public class BallController : MonoBehaviour,IInteractable
         if (other.CompareTag("Finish"))
         {
             manager.SetGameStage(GameStage.Win);
+            manager.comboCount = 0;
             GameEvent.Win();
         }
     }
 
     public void Interact()
     {
-        if(manager.GameStage == GameStage.Started)
+        if (manager.GameStage == GameStage.Started)
+        {
             rb.velocity = new Vector3(0, jumpPower, 0);
+            partBlood.SetActive(true);
+            manager.isFallen = false;
+        }
     }
 }

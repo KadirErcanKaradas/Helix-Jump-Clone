@@ -5,6 +5,7 @@ public class GameManager : Singleton<GameManager>
     public GameStage GameStage { get; private set; }
 
     public int comboCount;
+    public bool isFallen = false;
     public void SetGameStage(GameStage gameStage)
     {
         GameStage = gameStage;
